@@ -1,6 +1,8 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +17,7 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		char[] reversed = new char[string.length()];
-		for (int i = reversed.length - 1, j=0; i >= 0; i--, j++) {
+		for (int i = reversed.length - 1, j = 0; i >= 0; i--, j++) {
 			reversed[j] = string.charAt(i);
 		}
 		return new String(reversed);
@@ -30,8 +32,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String replaceString = phrase.replace("-", " ");
+		String[] acroSpace = replaceString.split(" ");
+		String acro = "";
+		for (String word : acroSpace) {
+			acro += String.valueOf((word.charAt(0)));
+		}
+
+		return acro.toUpperCase();
 	}
 
 	/**
@@ -84,16 +92,22 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
+			if (sideOne == sideTwo && sideTwo == sideThree)
+				return true;
 			// TODO Write an implementation for this method declaration
 			return false;
 		}
 
 		public boolean isIsosceles() {
+			if (sideOne == sideTwo || sideOne == sideThree || sideTwo == sideThree)
+				return true;
 			// TODO Write an implementation for this method declaration
 			return false;
 		}
 
 		public boolean isScalene() {
+			if (sideOne != sideTwo && sideOne != sideThree && sideTwo != sideThree)
+				return true;
 			// TODO Write an implementation for this method declaration
 			return false;
 		}
@@ -116,8 +130,27 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
+		String lowerString = string.toLowerCase();
+		char[] letters = lowerString.toCharArray();
+		int score = 0;
+		for (char letter : letters) {
+			if (letter == 'd' || letter == 'g')
+				score += 2;
+			else if (letter == 'b' || letter == 'c' || letter == 'm' || letter == 'p')
+				score += 3;
+			else if (letter == 'f' || letter == 'h' || letter == 'v' || letter == 'w' || letter == 'y')
+				score += 4;
+			else if (letter == 'k')
+				score += 5;
+			else if (letter == 'j' || letter == 'x')
+				score += 8;
+			else if (letter == 'q' || letter == 'z')
+				score += 10;
+			else
+				score += 1;
+		}
 		// TODO Write an implementation for this method declaration
-		return 0;
+		return score;
 	}
 
 	/**
@@ -152,8 +185,21 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
+		char[] phoneNumber = string.toCharArray();
+		String finishedNumber = "";
+
+		for (int i = 0; i < phoneNumber.length; i++) {
+			if ("0123456789".indexOf(phoneNumber[i]) != -1) {
+				finishedNumber += phoneNumber[i];
+			}
+		}
+		if (finishedNumber.length() < 10) {
+			throw new IllegalArgumentException("Not enough numbers to create phone number");
+		} else if (finishedNumber.length() > 11) {
+			throw new IllegalArgumentException("Phone number too long");
+		}
 		// TODO Write an implementation for this method declaration
-		return null;
+		return finishedNumber;
 	}
 
 	/**
@@ -166,8 +212,21 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
+		Map<String, Integer> occurence = new HashMap<>();
+		String replaceString0 = string.replace(",", " ");
+		String replaceString = replaceString0.replace("\n", "");
+		String[] words = replaceString.split(" ");
+		for (String word : words) {
+
+			for (int i = 0, cnt = 0; i < words.length; i++) {
+				if (word.equals(words[i])) {
+					cnt++;
+				}
+				occurence.put(word, cnt);
+			}
+		}
 		// TODO Write an implementation for this method declaration
-		return null;
+		return occurence;
 	}
 
 	/**
@@ -209,8 +268,31 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+			String newT = String.valueOf(t);
+			int l = 0;
+			int h = this.sortedList.size() - 1;
+			ArrayList<String> numList = new ArrayList<>();
+			for (int i = 0; i < h + 1; i++) {
+				numList.add(String.valueOf(this.sortedList.get(i)));
+			}
+
+			while (h >= l) {
+				int mid = l + (h - l) / 2;
+
+				if (numList.get(mid).compareTo(newT) == 0) {
+					return mid;
+				} else if (Integer.valueOf(numList.get(mid)) > Integer.valueOf(newT)) {
+
+					h = mid - 1;
+
+				}
+
+				else
+					l = mid + 1;
+
+			}
+			return -1;
+
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -246,8 +328,40 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
+		String[] phrase = string.split(" ");
+		String finalPhrase = "";
+		for(String word: phrase) {
+			
+		
+		String pigLatinWord = "";
+		for (int i = 0; i < word.length(); i++) {
+			char letter = word.charAt(i);
+			if (letter == 'a' || letter == 'e' || letter == 'i' || letter == 'o' || letter == 'u')
+			{
+				if (i == 0) 
+				{
+					pigLatinWord = word + "ay";
+				break;
+				}
+				else {
+					for (int j = i; j < word.length(); j++) {
+						pigLatinWord += word.charAt(j);
+					}
+					for(int k = 0; k < i; k++) {
+						pigLatinWord += word.charAt(k);
+					}
+					pigLatinWord += "ay";
+					break;
+				}
+
+			}
+		}
+		}
 		// TODO Write an implementation for this method declaration
-		return null;
+		String finalString = "";
+		for(String s: phrase)
+			finalString = s + " ";
+		return finalString;
 	}
 
 	/**
