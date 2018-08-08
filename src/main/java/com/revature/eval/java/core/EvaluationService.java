@@ -1,5 +1,9 @@
 package com.revature.eval.java.core;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -372,8 +376,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
+		String strInput = String.valueOf(input);
+		int sum = 0;
+		for(int i = 0; i < strInput.length(); i++) {
+			sum += Math.pow(strInput.charAt(i)-'0', strInput.length());
+		}
+		if (sum == input)return true;
 		// TODO Write an implementation for this method declaration
-		return false;
+		else return false;
 	}
 
 	/**
@@ -387,8 +397,16 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		
+        List<Long> factors = new ArrayList<>();
+        for (long i = 2; i <= l; i++) {
+            while (l % i == 0) {
+                factors.add(i);
+                l /= i;
+            }
+        }
+        return factors;
+		
 	}
 
 	/**
@@ -552,8 +570,15 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		   //In case,time not included
+        if(given instanceof LocalDate) {
+            LocalDateTime time = LocalDateTime.of((LocalDate) given, LocalTime.MIN);
+            return time.plus(Duration.ofSeconds(1000000000l));
+        }
+        //if time is included
+        LocalDateTime time = LocalDateTime.from(given);
+        return time.plus(Duration.ofSeconds(1000000000l));
+		
 	}
 
 	/**
