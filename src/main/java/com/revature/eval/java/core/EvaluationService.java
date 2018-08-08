@@ -328,27 +328,23 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		String[] phrase = string.split(" ");
-		String finalPhrase = "";
-		for(String word: phrase) {
-			
-		
+	
 		String pigLatinWord = "";
-		for (int i = 0; i < word.length(); i++) {
-			char letter = word.charAt(i);
+		for (int i = 0; i < string.length(); i++) {
+			char letter = string.charAt(i);
 			if (letter == 'a' || letter == 'e' || letter == 'i' || letter == 'o' || letter == 'u')
 			{
 				if (i == 0) 
 				{
-					pigLatinWord = word + "ay";
+					pigLatinWord = string + "ay";
 				break;
 				}
 				else {
-					for (int j = i; j < word.length(); j++) {
-						pigLatinWord += word.charAt(j);
+					for (int j = i; j < string.length(); j++) {
+						pigLatinWord += string.charAt(j);
 					}
 					for(int k = 0; k < i; k++) {
-						pigLatinWord += word.charAt(k);
+						pigLatinWord += string.charAt(k);
 					}
 					pigLatinWord += "ay";
 					break;
@@ -356,12 +352,8 @@ public class EvaluationService {
 
 			}
 		}
-		}
 		// TODO Write an implementation for this method declaration
-		String finalString = "";
-		for(String s: phrase)
-			finalString = s + " ";
-		return finalString;
+		return pigLatinWord;
 	}
 
 	/**
