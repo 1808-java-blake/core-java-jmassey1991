@@ -332,22 +332,19 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-	
+
 		String pigLatinWord = "";
 		for (int i = 0; i < string.length(); i++) {
 			char letter = string.charAt(i);
-			if (letter == 'a' || letter == 'e' || letter == 'i' || letter == 'o' || letter == 'u')
-			{
-				if (i == 0) 
-				{
+			if (letter == 'a' || letter == 'e' || letter == 'i' || letter == 'o' || letter == 'u') {
+				if (i == 0) {
 					pigLatinWord = string + "ay";
-				break;
-				}
-				else {
+					break;
+				} else {
 					for (int j = i; j < string.length(); j++) {
 						pigLatinWord += string.charAt(j);
 					}
-					for(int k = 0; k < i; k++) {
+					for (int k = 0; k < i; k++) {
 						pigLatinWord += string.charAt(k);
 					}
 					pigLatinWord += "ay";
@@ -378,12 +375,14 @@ public class EvaluationService {
 	public boolean isArmstrongNumber(int input) {
 		String strInput = String.valueOf(input);
 		int sum = 0;
-		for(int i = 0; i < strInput.length(); i++) {
-			sum += Math.pow(strInput.charAt(i)-'0', strInput.length());
+		for (int i = 0; i < strInput.length(); i++) {
+			sum += Math.pow(strInput.charAt(i) - '0', strInput.length());
 		}
-		if (sum == input)return true;
+		if (sum == input)
+			return true;
 		// TODO Write an implementation for this method declaration
-		else return false;
+		else
+			return false;
 	}
 
 	/**
@@ -397,16 +396,16 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		
-        List<Long> factors = new ArrayList<>();
-        for (long i = 2; i <= l; i++) {
-            while (l % i == 0) {
-                factors.add(i);
-                l /= i;
-            }
-        }
-        return factors;
-		
+
+		List<Long> factors = new ArrayList<>();
+		for (long i = 2; i <= l; i++) {
+			while (l % i == 0) {
+				factors.add(i);
+				l /= i;
+			}
+		}
+		return factors;
+
 	}
 
 	/**
@@ -444,8 +443,36 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
+			String rotated = "";
+			String alphabet = "abcdefghijklmnopqrstuvwxyz";
+			String upperAlph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			for (int j = 0; j < string.length(); j++) {
+
+				if (Character.isUpperCase(string.charAt(j))) {
+					for (int i = 0; i < upperAlph.length(); i++) {
+						if (string.toUpperCase().charAt(j) == upperAlph.toUpperCase().charAt(i)) {
+							if (i + this.key > 25) {
+								rotated += upperAlph.charAt((i + this.key) - 26);
+							} else
+								rotated += upperAlph.charAt(i + this.key);
+						}
+					}
+				} else if (string.charAt(j) == ' ') {
+					rotated += " ";
+				} else if (Character.isLowerCase(string.charAt(j))) {
+					for (int i = 0; i < alphabet.length(); i++) {
+						if (string.toUpperCase().charAt(j) == alphabet.toUpperCase().charAt(i)) {
+							if (i + this.key > 25) {
+								rotated += alphabet.charAt((i + this.key) - 26);
+							} else
+								rotated += alphabet.charAt(i + this.key);
+						}
+					}
+				} else
+					rotated += string.charAt(j);
+			}
 			// TODO Write an implementation for this method declaration
-			return null;
+			return rotated;
 		}
 
 	}
@@ -463,8 +490,22 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int calculateNthPrime(int i) {
+		int count = 0;
+		int potentialPrime;
+		for (potentialPrime = 2; count <= i; potentialPrime++) {
+			int flag = 0;
+			for (int k = 2; k < potentialPrime; k++) {
+				if (potentialPrime % k == 0) {
+					flag = 1;
+					break;
+				}
+			}
+
+			if (flag == 0)
+				count++;
+		}
 		// TODO Write an implementation for this method declaration
-		return 0;
+		return potentialPrime;
 	}
 
 	/**
@@ -500,8 +541,40 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
+			String encoded = "";
+			String alphabet = "abcdefghijklmnopqrstuvwxyz";
+//			String upperAlph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			int characterCount = 0;
+			for (int j = 0; j < string.length(); j++) {
+//				if (Character.isUpperCase(string.charAt(j))) {
+//					for (int i = 0; i < upperAlph.length(); i++) {
+//						if (string.charAt(j) == upperAlph.charAt(i)) {							
+//								encoded += Character.toLowerCase(upperAlph.charAt(25-i));
+//						}
+//					}
+//				}
+				if (Character.isLowerCase(string.charAt(j)) || Character.isUpperCase(string.charAt(j))) {
+					for (int i = 0; i < alphabet.length(); i++) {
+						if (Character.toLowerCase(string.charAt(j)) == alphabet.charAt(i)) {
+							encoded += Character.toLowerCase(alphabet.charAt(25 - i));
+							characterCount++;
+						}
+					}
+				}
+				else if(string.charAt(j) == ',' || string.charAt(j) == '.' || string.charAt(j) == ' ' )continue;
+				else {
+					encoded += string.charAt(j);
+					characterCount++;
+				}
+					
+				
+				if (characterCount == 5) {
+					encoded += " ";
+					characterCount = 0;
+				}					
+			}
 			// TODO Write an implementation for this method declaration
-			return null;
+			return encoded.trim();
 		}
 
 		/**
@@ -511,8 +584,26 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
+			String decoded = "";
+			String alphabet = "abcdefghijklmnopqrstuvwxyz";
+			for (int j = 0; j < string.length(); j++) {
+				
+				if(string.charAt(j) == ' ' )continue;
+				
+				else if (Character.isLowerCase(string.charAt(j))) {
+					for (int i = 0; i < alphabet.length(); i++) {
+						if (string.charAt(j) == alphabet.charAt(i)) {
+							decoded += Character.toLowerCase(alphabet.charAt(25 - i));							
+						}
+					
+					}
+				}
+				else decoded += string.charAt(j);
+			
+			}
+			
 			// TODO Write an implementation for this method declaration
-			return null;
+			return decoded;
 		}
 	}
 
@@ -570,15 +661,15 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		   //In case,time not included
-        if(given instanceof LocalDate) {
-            LocalDateTime time = LocalDateTime.of((LocalDate) given, LocalTime.MIN);
-            return time.plus(Duration.ofSeconds(1000000000l));
-        }
-        //if time is included
-        LocalDateTime time = LocalDateTime.from(given);
-        return time.plus(Duration.ofSeconds(1000000000l));
-		
+		// In case,time not included
+		if (given instanceof LocalDate) {
+			LocalDateTime time = LocalDateTime.of((LocalDate) given, LocalTime.MIN);
+			return time.plus(Duration.ofSeconds(1000000000l));
+		}
+		// if time is included
+		LocalDateTime time = LocalDateTime.from(given);
+		return time.plus(Duration.ofSeconds(1000000000l));
+
 	}
 
 	/**
