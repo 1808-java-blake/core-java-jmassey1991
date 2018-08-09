@@ -492,20 +492,26 @@ public class EvaluationService {
 	public int calculateNthPrime(int i) {
 		int count = 0;
 		int potentialPrime;
-		for (potentialPrime = 2; count <= i; potentialPrime++) {
-			int flag = 0;
-			for (int k = 2; k < potentialPrime; k++) {
-				if (potentialPrime % k == 0) {
-					flag = 1;
-					break;
-				}
+		int lastPrime = 0;
+		if(i == 0)throw new IllegalArgumentException();
+		for (potentialPrime = 2; count < i; potentialPrime++) {
+			
+			if(isPrime(potentialPrime)) {
+				count++;
+				lastPrime = potentialPrime;
 			}
 
-			if (flag == 0)
-				count++;
+			
 		}
 		// TODO Write an implementation for this method declaration
-		return potentialPrime;
+		return lastPrime;
+	}
+	boolean isPrime(int n) {
+	    for(int i=2;i<n;i++) {
+	        if(n%i==0)
+	            return false;
+	    }
+	    return true;
 	}
 
 	/**
