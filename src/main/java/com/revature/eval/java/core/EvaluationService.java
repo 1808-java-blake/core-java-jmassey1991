@@ -759,8 +759,19 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
+		String[] words = string.split(" ");
+		int first, second, result = 0;
+		first = Integer.valueOf(words[2]);
+		
+		if (words[4].equals("by")) second = Integer.valueOf(words[5].replace("?", ""));
+		else second = Integer.valueOf(words[4].replace("?", ""));
+		
+		if (words[3].equals("plus"))result = first + second;
+		else if (words[3].equals("minus"))result = first - second;
+		else if (words[3].equals("multiplied"))result = first * second;
+		else if (words[3].equals("divided"))result = first / second;
 		// TODO Write an implementation for this method declaration
-		return 0;
+		return result;
 	}
 
 }
