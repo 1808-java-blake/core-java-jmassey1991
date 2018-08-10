@@ -636,8 +636,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isValidIsbn(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		String noDashes = string.replace("-", "");
+		int sum = 0;
+		for(int i = 0, j = 10; i < noDashes.length(); i++, j--) {
+			 sum += Integer.valueOf(noDashes.charAt(i)) * j;
+		}
+		if (sum % 11 == 0 )return true;
+		
+		else return false;
 	}
 
 	/**
